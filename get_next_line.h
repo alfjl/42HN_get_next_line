@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/21 10:34:58 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/23 09:58:39 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GETNEXTLINE_H
 
 /* -------------------------- INCLUDES -------------------------------------- */
-//# include <stdarg.h>  --- inlcude all necessary .h files
+#include <stdio.h>	// to get definition of 'NULL' for use in .c file
 
 /* -------------------------- DEFINES --------------------------------------- */
 
