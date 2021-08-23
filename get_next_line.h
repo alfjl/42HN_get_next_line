@@ -6,15 +6,15 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/23 09:58:39 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/23 11:49:54 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GETNEXTLINE_H
-# define GETNEXTLINE_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 /* -------------------------- INCLUDES -------------------------------------- */
-#include <stdio.h>	// to get definition of 'NULL' for use in .c file
+# include <stdio.h>	// to get definition of 'NULL' and 'size_t' for use in .c file
 
 /* -------------------------- DEFINES --------------------------------------- */
 
