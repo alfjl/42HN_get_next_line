@@ -6,12 +6,14 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:49:00 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/24 10:09:30 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/24 10:36:57 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+
+/* ----------------------------- FUNC 1 ------------------------------------- */
 char	*ft_strchr(const char *s, int c)
 {
 	size_t	i;
@@ -29,7 +31,7 @@ char	*ft_strchr(const char *s, int c)
 		return (&cp[i]);
 	return (NULL);
 }
-
+/* ----------------------------- FUNC 2 ------------------------------------- */
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -39,7 +41,7 @@ size_t	ft_strlen(const char *str)
 		i++;
 	return (i);
 }
-
+/* ----------------------------- FUNC 3 ------------------------------------- */
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*js;
@@ -66,4 +68,26 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	js[i] = '\0';
 	return (js);
+}
+/* ----------------------------- FUNC 4 ------------------------------------- */
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*subs;
+	size_t	i;
+	size_t	j;
+
+	if (s == 0)
+		return (0);
+	j = ft_strlen(s);
+	subs = (char *)malloc((sizeof(*s) * len) + 1);
+	if (!subs)
+		return (NULL);
+	i = 0;
+	while (s[i] && i < len && (size_t)start < j)
+	{
+		subs[i] = s[(size_t)start + i];
+		i++;
+	}
+	subs[i] = '\0';
+	return (subs);
 }
