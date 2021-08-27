@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/27 13:38:50 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/27 16:56:38 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,59 @@ char	*get_next_line(int fd)
 			free(buf); // maybe not needed, if 'break' only breaks from 'if', not 'while'. Then another break point needed in 'while'!
 			break;
 		}
-		free(buf);
+		if (buf != NULL)
+			free(buf);
 	}
 	line = string_as_c_string(&string);
 	// ---------- End Pattern (free & return) --------
 	string_destroy(&string);
 	return (line);
 }
+
 /* ----------------------------- FUNC 2 ------------------------------------- */
-	string_create(&string);
+string_create(t_string *string)
+{
+	string->chars = (char)malloc(sizeof(char) * 1024);
+	string->allocated = 1024;
+	string->filled;
+}
+
 /* ----------------------------- FUNC 3 ------------------------------------- */
-string_correct_chars(&string, buf, &i)
+string_correct_chars(t_string *string, char *buf, int *i)
+{
+	while (*i < BUFFER_SIZE)
+	{
+		if (buf[*i] != '\n' && buf[*i] != EOF)
+			string_append_chars(&string, buf[*i]);
+	}
+}
+
 /* ----------------------------- FUNC 4 ------------------------------------- */
-string_append_chars('\n')
+string_append_chars(t_string *string, char c)
+{
+	if (string->filled >= string->allocated)
+	{
+
+	}
+	string->filled++;
+	string->chars[string->filled];
+}
+
 /* ----------------------------- FUNC 5 ------------------------------------- */
 string_as_c_string(&string)
+{
+	
+}
+
 /* ----------------------------- FUNC 6 ------------------------------------- */
-string_destroy(&string)
+string_destroy(t_string *string)
+{
+	if (string->chars != NULL)
+		free(string->chars);
+}
+
 /* ----------------------------- FUNC 6 ------------------------------------- */
 string_append_chars()
+{
+
+}
