@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/27 16:56:38 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/27 18:24:09 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,22 @@ char	*get_next_line(int fd)
 	// ---------- Variable Initialization Pattern ----
 	string_create(&string);
 	bytes_read = 0;
-
 	// ---------- Main Body --------------------------
 	while (bytes_read >= 0)
 	{
 		i = 0;
 		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		if (buf == NULL)
+		{
+			string_destroy(&string);
+			return (NULL);
+		}
 		bytes_read = read(fd, buf, BUFFER_SIZE);
+		printf("I'm here!!!!");
 		string_correct_chars(&string, buf, &i);
 		if (buf[i] == '\n')
 		{
-			string_append_chars('\n');
+			string_append_chars(&string, '\n');
 			i++;
 			free(buf); // maybe not needed, if 'break' only breaks from 'if', not 'while'. Then another break point needed in 'while'!
 			break;
@@ -47,56 +52,85 @@ char	*get_next_line(int fd)
 		if (buf != NULL)
 			free(buf);
 	}
-	line = string_as_c_string(&string);
+	string_as_c_string(&string, &line);
 	// ---------- End Pattern (free & return) --------
 	string_destroy(&string);
 	return (line);
 }
 
 /* ----------------------------- FUNC 2 ------------------------------------- */
-string_create(t_string *string)
+void	string_create(t_string *string)
 {
-	string->chars = (char)malloc(sizeof(char) * 1024);
+	string->chars = (char *)malloc(sizeof(char) * 1024);
 	string->allocated = 1024;
-	string->filled;
+	string->filled = 0;
 }
 
 /* ----------------------------- FUNC 3 ------------------------------------- */
-string_correct_chars(t_string *string, char *buf, int *i)
+void	string_correct_chars(t_string *string, char *buf, int *i)
 {
 	while (*i < BUFFER_SIZE)
 	{
 		if (buf[*i] != '\n' && buf[*i] != EOF)
-			string_append_chars(&string, buf[*i]);
+			string_append_chars(string, buf[*i]);
 	}
 }
 
 /* ----------------------------- FUNC 4 ------------------------------------- */
-string_append_chars(t_string *string, char c)
+void	string_append_chars(t_string *string, char c)
 {
+	char	*temp;
+	int		j;
+
 	if (string->filled >= string->allocated)
 	{
-
+		temp = (char *)malloc(sizeof(char) * (string->filled + BUFFER_SIZE));
+		if (temp == NULL)
+		{
+			string_destroy(string);
+			//return (NULL);
+		}
+		else
+		{
+			j = 0;
+			while (j < string->filled)
+			{
+				temp[j] = string->chars[j];
+				j++;
+			}
+			//free(string->chars);
+			string->chars = temp;
+			string->allocated = string->filled + BUFFER_SIZE;
+		}
 	}
 	string->filled++;
-	string->chars[string->filled];
+	string->chars[string->filled] = c;
 }
 
 /* ----------------------------- FUNC 5 ------------------------------------- */
-string_as_c_string(&string)
+char	*string_as_c_string(t_string *string, char **line)
 {
-	
+	int		j;
+
+	j = 0;
+	while (j < string->filled)
+	{
+		*line[j] = string->chars[j];
+		j++;
+	}
+	*line[j] = '\0';
+	return (*line);
 }
 
 /* ----------------------------- FUNC 6 ------------------------------------- */
-string_destroy(t_string *string)
+void	string_destroy(t_string *string)
 {
 	if (string->chars != NULL)
 		free(string->chars);
+	string->chars = NULL;
+	string->allocated = 0;
+	string->filled = 0;
 }
 
-/* ----------------------------- FUNC 6 ------------------------------------- */
-string_append_chars()
-{
-
-}
+// ############################ QUESTIONS ######################################
+// 1.) How do error handling? e.g. miss malloc

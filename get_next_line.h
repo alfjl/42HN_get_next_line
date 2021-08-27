@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/27 16:40:51 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/27 18:15:08 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <unistd.h>	// for read -------------------------------------------------
 
 /* -------------------------- DEFINES --------------------------------------- */
-// # define __FAIL__ -1
-// # define __SUCCESS__ 1 // do I need that, or not? (ret value of ft_join_read)--------
-
 typedef struct s_string
 {
 	char			*chars;
@@ -31,7 +28,10 @@ typedef struct s_string
 
 /* -------------------------- PROTOTYPES ------------------------------------ */
 char	*get_next_line(int fd);
-
-
+void	string_create(t_string *string);
+void	string_correct_chars(t_string *string, char *buf, int *i);
+void	string_append_chars(t_string *string, char c);
+char	*string_as_c_string(t_string *string, char **line);
+void	string_destroy(t_string *string);
 
 #endif
