@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/28 10:15:57 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/28 11:34:55 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 char	*get_next_line(int fd)
 {
 	// ---------- Variable Declaration Pattern -------
-	static int	i = 0;
+	static int	i;
 	int			bytes_read;
 	char		*buf;
 	char		*line;
@@ -41,21 +41,21 @@ char	*get_next_line(int fd)
 		}
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		//string_correct_chars(&string, buf, &i, &bytes_read);
-		printf("\ni VOR = %i\n", i); // ################################################### TPO #############################################
 		string_correct_chars(&string, buf, &i);
-		printf("i NACH = %i\n", i); // ################################################### TPO #############################################
 		if (buf[i] == '\n')
 		{
 			// string_append_chars(&string, '\n', &bytes_read);
 			string_append_chars(&string, '\n');
-			i++;
+			//i++;
 			//string_append_chars(&string, '\0');
 			free(buf); // maybe not needed, if 'break' only breaks from 'if', not 'while'. Then another break point needed in 'while'!
+			//bytes_read = -12;
 			break;
 		}
 		if (buf != NULL)
 			free(buf);
 	}
+	line = (char *)malloc(sizeof(char) * (string.filled + 1));
 	string_as_c_string(&string, &line);
 	// ---------- End Pattern (free & return) --------
 	string_destroy(&string);
@@ -80,7 +80,6 @@ void	string_correct_chars(t_string *string, char *buf, int *i)
 			string_append_chars(string, buf[*i]);
 			*i += 1;
 			//string_append_chars(string, '\0');
-			printf("i IN = %i\n", *i); // ################################################### TPO #############################################
 		}
 		else
 			break;
@@ -93,7 +92,6 @@ void	string_append_chars(t_string *string, char c)
 	char	*temp;
 	int		j;
 
-	//printf("\nHERE!!!!\n"); // ################################################### TPO #############################################
 	if (string->filled >= string->allocated)
 	{
 		temp = (char *)malloc(sizeof(char) * (string->filled + BUFFER_SIZE + 1));
@@ -115,8 +113,8 @@ void	string_append_chars(t_string *string, char c)
 			string->allocated = string->filled + BUFFER_SIZE;
 		}
 	}
-	string->filled++;
 	string->chars[string->filled] = c;
+	string->filled++;
 }
 
 /* ----------------------------- FUNC 5 ------------------------------------- */
@@ -125,12 +123,19 @@ char	*string_as_c_string(t_string *string, char **line)
 	int		j;
 
 	j = 0;
+	//printf("str_.chr = %s\n", string->chars); // ################################################### TPO #############################################
 	while (j < string->filled)
 	{
-		*line[j] = string->chars[j];
+		// printf("string->chars[j] = %c\n", string->chars[j]);
+		// write(1, &string->chars[j], 1);
+		// write(1, "X\n", 2);
+		*(*line + j) = string->chars[j];
+		//line[0][j] = 'Q';
+		//write(1, *line, 1);
+		//printf("*line[j] = %c\n", *line[j]); // ################################################### TPO #############################################
 		j++;
 	}
-	*line[j] = '\0';
+	//*line[j] = '\0';
 	return (*line);
 }
 

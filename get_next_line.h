@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/27 18:15:08 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/28 11:36:47 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 /* -------------------------- DEFINES --------------------------------------- */
 typedef struct s_string
 {
-	char			*chars;
-	unsigned int	allocated;
-	unsigned int	filled;
+	char	*chars;
+	int		allocated;
+	int		filled;
 }					t_string;
 
 /* -------------------------- PROTOTYPES ------------------------------------ */
