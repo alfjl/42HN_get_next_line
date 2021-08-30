@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/28 13:55:06 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/30 09:54:25 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 char	*get_next_line(int fd)
 {
 	// ---------- Variable Declaration Pattern -------
-	static int	i;
-	int			bytes_read;
-	char		*buf;
-	char		*line;
-	t_string	string;
+	int					i;
+	int					bytes_read;
+	char				*buf;
+	char				*line;
+	static t_string		string;
 
 	// ---------- Guard Pattern ----------------------
 	if (fd < 0)
@@ -40,13 +40,19 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		bytes_read = read(fd, buf, BUFFER_SIZE);
-		//string_correct_chars(&string, buf, &i, &bytes_read);
+		if (bytes_read < 0)
+		{
+			free(buf);
+			string_destroy(&string);
+			return (NULL);
+		}
 		string_correct_chars(&string, buf, &i);
 		if (buf[i] == '\n')
 		{
-			// string_append_chars(&string, '\n', &bytes_read);
 			string_append_chars(&string, '\n');
-			free(buf); // maybe not needed, if 'break' only breaks from 'if', not 'while'. Then another break point needed in 'while'!
+			i++;
+			string_append_chars(&string, '\0');
+			free(buf);
 			break;
 		}
 		if (buf != NULL)
@@ -62,8 +68,8 @@ char	*get_next_line(int fd)
 /* ----------------------------- FUNC 2 ------------------------------------- */
 void	string_create(t_string *string)
 {
-	string->chars = (char *)malloc(sizeof(char) * 1024);
-	string->allocated = 1024;
+	string->chars = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+	string->allocated = BUFFER_SIZE;
 	string->filled = 0;
 }
 
@@ -74,6 +80,7 @@ void	string_correct_chars(t_string *string, char *buf, int *i)
 	{
 		if (buf[*i] != '\n' && buf[*i] != EOF)
 		{
+			printf("STRING = %s, ALLOCATED = %i, FILLED = %i\n", string->chars, string->allocated, string->filled); // ######################## TPO #######################
 			string_append_chars(string, buf[*i]);
 			*i += 1;
 		}
@@ -139,4 +146,4 @@ void	string_destroy(t_string *string)
 }
 
 // ############################ QUESTIONS ######################################
-// 1.) How do error handling? e.g. miss malloc
+// 1.) How do error handling? e.g. miss c
