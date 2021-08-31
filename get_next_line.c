@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/30 09:54:25 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:42:52 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,134 +16,114 @@
 char	*get_next_line(int fd)
 {
 	// ---------- Variable Declaration Pattern -------
-	int					i;
-	int					bytes_read;
-	char				*buf;
-	char				*line;
-	static t_string		string;
+	int				i;
+	int				bytes_read;
+	static t_buffer	buffer;
+	t_line			line;
 
 	// ---------- Guard Pattern ----------------------
 	if (fd < 0)
 		return (NULL);
 
 	// ---------- Variable Initialization Pattern ----
-	string_create(&string);
+	buffer_create(&buffer);
+	line_create(&line);
 	bytes_read = 0;
+
 	// ---------- Main Body --------------------------
 	while (bytes_read >= 0)
 	{
-		i = 0;
-		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (buf == NULL)
-		{
-			string_destroy(&string);
-			return (NULL);
-		}
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		if (bytes_read < 0)
-		{
-			free(buf);
-			string_destroy(&string);
-			return (NULL);
-		}
-		string_correct_chars(&string, buf, &i);
-		if (buf[i] == '\n')
-		{
-			string_append_chars(&string, '\n');
-			i++;
-			string_append_chars(&string, '\0');
-			free(buf);
-			break;
-		}
-		if (buf != NULL)
-			free(buf);
+		buffer_write(&buffer, &bytes_read, fd);
+		line_write(&line, &buffer, &i);
 	}
-	line = (char *)malloc(sizeof(char) * (string.filled + 1));
-	string_as_c_string(&string, &line);
-	// ---------- End Pattern (free & return) --------
-	string_destroy(&string);
-	return (line);
+	buffer_destroy(&buffer);
+	return (line.chars);
 }
-
 /* ----------------------------- FUNC 2 ------------------------------------- */
-void	string_create(t_string *string)
+void	buffer_create(t_buffer *buffer)
 {
-	string->chars = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-	string->allocated = BUFFER_SIZE;
-	string->filled = 0;
+	if (buffer == NULL)
+	{
+		// buffer->chars = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+		// if (buffer->chars == NULL)
+		// 	//return (NULL); // muss noch abgefangen werden!!!!!!
+		buffer->write_head = BUFFER_SIZE;
+		buffer->read_head = 0;
+	}
 }
-
 /* ----------------------------- FUNC 3 ------------------------------------- */
-void	string_correct_chars(t_string *string, char *buf, int *i)
+void	line_create(t_line *line)
+{
+	line->chars = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (line->chars == NULL)
+	{
+		//buffer_destroy(&buffer); // muss noch implementiert werden!!!!!!
+		//return (NULL); // muss noch abgefangen werden!!!!!!
+	}
+	line->allocated = BUFFER_SIZE;
+	line->filled = 0;
+}
+/* ----------------------------- FUNC 4 ------------------------------------- */
+void	buffer_destroy(t_buffer *buffer)
+{
+	// if (buffer->chars[0] != NULL)
+	// 	free(buffer->chars);
+	// buffer->chars = NULL;
+	buffer->write_head = 0;
+	buffer->read_head = 0;
+}
+/* ----------------------------- FUNC 5 ------------------------------------- */
+void	buffer_write(t_buffer *buffer, int *bytes_read, int fd)
+{
+	if (buffer->read_head == buffer->write_head)
+	{
+		*bytes_read = read(fd, buffer->chars, BUFFER_SIZE);
+	}
+}
+/* ----------------------------- FUNC 6 ------------------------------------- */
+void	line_write(t_line *line, t_buffer *buffer, int *i)
 {
 	while (*i < BUFFER_SIZE)
 	{
-		if (buf[*i] != '\n' && buf[*i] != EOF)
+		if (buffer->chars[*i] != '\n' && buffer->chars[*i] != '\0')
 		{
-			printf("STRING = %s, ALLOCATED = %i, FILLED = %i\n", string->chars, string->allocated, string->filled); // ######################## TPO #######################
-			string_append_chars(string, buf[*i]);
+			//printf("STRING = %s, ALLOCATED = %i, FILLED = %i\n", string->chars, string->allocated, string->filled); // ######################## TPO #######################
+			line_append_chars(line, buffer->chars[*i]);
 			*i += 1;
 		}
 		else
 			break;
 	}
 }
-
-/* ----------------------------- FUNC 4 ------------------------------------- */
-void	string_append_chars(t_string *string, char c)
+/* ----------------------------- FUNC 7 ------------------------------------- */
+void	line_append_chars(t_line *line, char c)
 {
 	char	*temp;
 	int		j;
 
-	if (string->filled >= string->allocated)
+	if (line->filled >= line->allocated)
 	{
-		temp = (char *)malloc(sizeof(char) * (string->filled + BUFFER_SIZE + 1));
+		temp = (char *)malloc(sizeof(char) * (line->filled + BUFFER_SIZE + 1));
 		if (temp == NULL)
 		{
-			string_destroy(string);
-			//return (NULL);
+			//return (NULL); // muss noch abgefangen werden!!!!!!
 		}
 		else
 		{
 			j = 0;
-			while (j < string->filled)
+			while (j < line->filled)
 			{
-				temp[j] = string->chars[j];
+				temp[j] = line->chars[j];
 				j++;
 			}
-			free(string->chars);
-			string->chars = temp;
-			string->allocated = string->filled + BUFFER_SIZE;
+			free(line->chars);
+			line->chars = temp;
+			line->allocated = line->filled + BUFFER_SIZE;
 		}
 	}
-	string->chars[string->filled] = c;
-	string->filled++;
+	line->chars[line->filled] = c;
+	line->filled++;
 }
-
-/* ----------------------------- FUNC 5 ------------------------------------- */
-char	*string_as_c_string(t_string *string, char **line)
-{
-	int		j;
-
-	j = 0;
-	while (j < string->filled)
-	{
-		*(*line + j) = string->chars[j];
-		j++;
-	}
-	*(*line + j) = '\0';
-	return (*line);
-}
-
-/* ----------------------------- FUNC 6 ------------------------------------- */
-void	string_destroy(t_string *string)
-{
-	if (string->chars != NULL)
-		free(string->chars);
-	string->chars = NULL;
-	string->allocated = 0;
-	string->filled = 0;
-}
-
-// ############################ QUESTIONS ######################################
-// 1.) How do error handling? e.g. miss c
+/* ----------------------------- FUNC 8 ------------------------------------- */
+/* ----------------------------- FUNC 9 ------------------------------------- */
+/* ----------------------------- FUNC 10 ------------------------------------ */

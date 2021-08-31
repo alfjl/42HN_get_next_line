@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_TEST.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/28 11:36:47 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:28:34 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,34 @@
 # define GET_NEXT_LINE_H
 
 /* -------------------------- INCLUDES -------------------------------------- */
-# include <stdio.h>	// for definition of 'NULL' & 'size_t'---------------------------
-# include <stdlib.h>	// for malloc & free ----------------------------------------
-# include <unistd.h>	// for read -------------------------------------------------
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 /* -------------------------- DEFINES --------------------------------------- */
-typedef struct s_string
+# define __NEWLINE__ -2
+
+typedef struct s_buffer
+{
+	char	chars[BUFFER_SIZE];
+	int		write_head;
+	int		read_head;
+}					t_buffer;
+
+typedef struct s_line
 {
 	char	*chars;
 	int		allocated;
 	int		filled;
-}					t_string;
+}					t_line;
 
 /* -------------------------- PROTOTYPES ------------------------------------ */
 char	*get_next_line(int fd);
-void	string_create(t_string *string);
-void	string_correct_chars(t_string *string, char *buf, int *i);
-void	string_append_chars(t_string *string, char c);
-char	*string_as_c_string(t_string *string, char **line);
-void	string_destroy(t_string *string);
+void	buffer_create(t_buffer *buffer);
+void	line_create(t_line *line);
+void	buffer_destroy(t_buffer *buffer);
+void	buffer_write(t_buffer *buffer, int *bytes_read, int fd);
+void	line_write(t_line *line, t_buffer *buffer, int *i);
+void	line_append_chars(t_line *line, char c);
 
 #endif
