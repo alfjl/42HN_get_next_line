@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_TEST.h                               :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/08/31 18:28:34 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/01 09:29:54 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ void	buffer_destroy(t_buffer *buffer);
 void	buffer_write(t_buffer *buffer, int *bytes_read, int fd);
 void	line_write(t_line *line, t_buffer *buffer, int *i);
 void	line_append_chars(t_line *line, char c);
+void	ft_bzero(void *s, size_t n);
 
 #endif
