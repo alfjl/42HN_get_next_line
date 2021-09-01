@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/01 11:41:58 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/01 11:56:10 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_next_line(int fd)
 	// ---------- Guard Pattern ----------------------
 	if (fd < 0)
 		return (NULL);
-	printf("READ_HEAD BEGINNING = %d\n", buffer.read_head); // ######################## TPO #######################
+	//printf("READ_HEAD BEGINNING = %d\n", buffer.read_head); // ######################## TPO #######################
 
 	// ---------- Variable Initialization Pattern ----
 	buffer_create(&buffer);
@@ -32,12 +32,11 @@ char	*get_next_line(int fd)
 	// ---------- Main Body --------------------------
 	while (bytes_read >= 0)
 	{
-		i = 0;
 		buffer_write(&buffer, &bytes_read, fd);
 		line_write(&line, &buffer, &i);
 		if (line.chars[line.filled - 1] == '\n')
 			break;
-		else if (bytes_read == 0 && buffer.chars[i] == '\0')
+		else if (bytes_read == 0 && buffer.chars[buffer.read_head] == '\0')
 			break;
 	}
 	//buffer_destroy(&buffer);
@@ -89,19 +88,17 @@ void	buffer_write(t_buffer *buffer, int *bytes_read, int fd)
 /* ----------------------------- FUNC 6 ------------------------------------- */
 void	line_write(t_line *line, t_buffer *buffer, int *i)
 {
-	while (*i < BUFFER_SIZE)
+	while (buffer->read_head < BUFFER_SIZE)
 	{
-		if (buffer->chars[*i] != '\n' && buffer->chars[*i] != '\0')
+		if (buffer->chars[buffer->read_head] != '\n' && buffer->chars[buffer->read_head] != '\0')
 		{
 			//printf("LINE = %s, ALLOCATED = %i, FILLED = %i\n", line->chars, line->allocated, line->filled); // ######################## TPO #######################
-			line_append_chars(line, buffer->chars[*i]);
-			*i += 1;
+			line_append_chars(line, buffer->chars[buffer->read_head]);
 			buffer->read_head += 1;
 		}
-		else if (buffer->chars[*i] == '\n')
+		else if (buffer->chars[buffer->read_head] == '\n')
 		{
-			line_append_chars(line, buffer->chars[*i]);
-			*i += 1;
+			line_append_chars(line, buffer->chars[buffer->read_head]);
 			buffer->read_head += 1;
 			line_append_chars(line, '\0');
 			line->filled -= 1;
@@ -110,9 +107,9 @@ void	line_write(t_line *line, t_buffer *buffer, int *i)
 		else
 			break;
 	}
-	printf("BUFFER = %s\n", buffer->chars); // ######################## TPO #######################
-	printf("LINE = %s\n", line->chars); // ######################## TPO #######################
-	printf("READ_HEAD = %d\n", buffer->read_head); // ######################## TPO #######################
+	//printf("BUFFER = %s\n", buffer->chars); // ######################## TPO #######################
+	//printf("LINE = %s\n", line->chars); // ######################## TPO #######################
+	//printf("READ_HEAD = %d\n", buffer->read_head); // ######################## TPO #######################
 }
 /* ----------------------------- FUNC 7 ------------------------------------- */
 void	line_append_chars(t_line *line, char c)
