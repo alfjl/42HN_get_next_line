@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/02 11:38:32 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/02 16:47:55 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*get_next_line(int fd)
 {
 	// ---------- Variable Declaration Pattern -------
 	int				newly_created;
-	int				malloc_error;
 	int				bytes_read;
 	static t_buffer	buffer;
 	t_line			line;
@@ -30,26 +29,27 @@ char	*get_next_line(int fd)
 	bytes_read = 1;
 	newly_created = __OFF__;
 	buffer_create(&buffer, &newly_created);
-	malloc_error = line_create(&line);
-	if (malloc_error == 0)
+	if (line_create(&line) == 0)
 		return (NULL);
 	// ---------- Main Body --------------------------
 	while (bytes_read >= 0)
 	{
-		buffer_write(&buffer, &bytes_read, fd, &newly_created);
-			//printf("line = %s\n", line.chars); // ####### TPO ############
+		if (buffer_write(&buffer, &bytes_read, fd, &newly_created) == -1)
+		{
+			free (line.chars);
+			return (NULL);
+		}
 		line_write(&line, &buffer);
 		if (line.chars[line.filled - 1] == '\n')
 			break;
-		if (bytes_read == 0 && buffer.chars[buffer.read_head] == '\0')
-		{
-			//printf("buffer.chars[buffer.read_head] = %d\n", buffer.chars[buffer.read_head]); // ########## TPO #############
-			//printf("buffer.chars[buffer.read_head - 1] = %d\n", buffer.chars[buffer.read_head - 1]); // ########## TPO #############
-			// printf("bytes_read = %d\n", bytes_read); // ########## TPO #############
+		if (bytes_read ==0  && buffer.chars[buffer.read_head] == '\0') // if I put an "if" here, theres one KO switched to OK, but 2 OKs switched to KOs.
 			break;
-		}
 	}
-	//buffer_destroy(&buffer);
+	if (ft_strlen(line.chars) == 0)
+	{
+		free(line.chars);
+		return (NULL);
+	}
 	return (line.chars);
 }
 /* ----------------------------- FUNC 2 ------------------------------------- */
@@ -76,16 +76,7 @@ int	line_create(t_line *line)
 	return (1);
 }
 /* ----------------------------- FUNC 4 ------------------------------------- */
-void	buffer_destroy(t_buffer *buffer)
-{
-	// if (buffer->chars[0] != NULL)
-	// 	free(buffer->chars);
-	// buffer->chars = NULL;
-	buffer->write_head = 0;
-	buffer->read_head = 0;
-}
-/* ----------------------------- FUNC 5 ------------------------------------- */
-void	buffer_write(t_buffer *buffer, int *bytes_read, int fd, int *newly_created)
+int	buffer_write(t_buffer *buffer, int *bytes_read, int fd, int *newly_created)
 {
 	if (*newly_created == __ON__ ||
 		buffer->read_head >= buffer->write_head)
@@ -95,15 +86,17 @@ void	buffer_write(t_buffer *buffer, int *bytes_read, int fd, int *newly_created)
 		buffer->write_head = *bytes_read;
 		buffer->chars[*bytes_read] = '\0';
 	}
+	if (*bytes_read == -1)
+		return (-1);
+	return (0);
 }
-/* ----------------------------- FUNC 6 ------------------------------------- */
+/* ----------------------------- FUNC 5 ------------------------------------- */
 void	line_write(t_line *line, t_buffer *buffer)
 {
 	while (buffer->read_head < buffer->write_head)
 	{
 		if (buffer->chars[buffer->read_head] != '\n' && buffer->chars[buffer->read_head] != '\0')
 		{
-			//printf("LINE = %s, ALLOCATED = %i, FILLED = %i\n", line->chars, line->allocated, line->filled); // ######################## TPO #######################
 			line_append_chars(line, buffer->chars[buffer->read_head]);
 			buffer->read_head += 1;
 		}
@@ -111,7 +104,7 @@ void	line_write(t_line *line, t_buffer *buffer)
 		{
 			line_append_chars(line, buffer->chars[buffer->read_head]);
 			buffer->read_head += 1;
-			line_append_chars(line, '\0');
+			line_append_chars(line, 0);
 			line->filled -= 1;
 			break;
 		}
@@ -124,11 +117,8 @@ void	line_write(t_line *line, t_buffer *buffer)
 		else
 			break;
 	}
-	//printf("BUFFER = %s\n", buffer->chars); // ######################## TPO #######################
-	//printf("LINE = %s\n", line->chars); // ######################## TPO #######################
-	//printf("READ_HEAD = %d\n", buffer->read_head); // ######################## TPO #######################
 }
-/* ----------------------------- FUNC 7 ------------------------------------- */
+/* ----------------------------- FUNC 6 ------------------------------------- */
 void	line_append_chars(t_line *line, char c)
 {
 	char	*temp;
@@ -150,6 +140,7 @@ void	line_append_chars(t_line *line, char c)
 				j++;
 			}
 			free(line->chars);
+			line->chars = NULL;
 			line->chars = temp;
 			line->allocated = line->filled + BUFFER_SIZE;
 		}
@@ -157,7 +148,7 @@ void	line_append_chars(t_line *line, char c)
 	line->chars[line->filled] = c;
 	line->filled++;
 }
-/* ----------------------------- FUNC 8 ------------------------------------- */
+/* ----------------------------- FUNC 7 ------------------------------------- */
 void	ft_bzero(void *s, size_t n)
 {
 	unsigned char	*cs;
@@ -170,6 +161,16 @@ void	ft_bzero(void *s, size_t n)
 		cs[i] = '\0';
 		i++;
 	}
+}
+/* ----------------------------- FUNC 8 ------------------------------------- */
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 /* ----------------------------- FUNC 9 ------------------------------------- */
 
