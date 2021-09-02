@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/02 16:42:07 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/02 17:20:39 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_buffer
 	char	chars[BUFFER_SIZE];
 	int		write_head;
 	int		read_head;
+	int		newly_created;
 }					t_buffer;
 
 typedef struct s_line
@@ -39,11 +40,12 @@ typedef struct s_line
 
 /* -------------------------- PROTOTYPES ------------------------------------ */
 char	*get_next_line(int fd);
-void	buffer_create(t_buffer *buffer, int *newly_created);
+void	buffer_create(t_buffer *buffer);
 int		line_create(t_line *line);
-int		buffer_write(t_buffer *buffer, int *bytes_read, int fd, int *newly_created);
+int		buffer_write(t_buffer *buffer, t_line *line, int *bytes_read, int fd);
 void	line_write(t_line *line, t_buffer *buffer);
 void	line_append_chars(t_line *line, char c);
+int		line_determine_null(t_line *line);
 void	ft_bzero(void *s, size_t n);
 size_t	ft_strlen(const char *s);
 
