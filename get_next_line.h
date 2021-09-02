@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/02 10:37:20 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/02 11:38:39 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,5 @@ void	buffer_write(t_buffer *buffer, int *bytes_read, int fd, int *newly_created)
 void	line_write(t_line *line, t_buffer *buffer);
 void	line_append_chars(t_line *line, char c);
 void	ft_bzero(void *s, size_t n);
-size_t	ft_strlen(const char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/02 11:35:14 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/02 11:38:32 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,11 @@ void	buffer_destroy(t_buffer *buffer)
 /* ----------------------------- FUNC 5 ------------------------------------- */
 void	buffer_write(t_buffer *buffer, int *bytes_read, int fd, int *newly_created)
 {
-	// if ((buffer->read_head == 0 && buffer->write_head > 0) ||
-	// 	buffer->read_head >= buffer->write_head)
 	if (*newly_created == __ON__ ||
 		buffer->read_head >= buffer->write_head)
 	{
-		//ft_bzero(buffer->chars, BUFFER_SIZE + 1);
 		*bytes_read = read(fd, buffer->chars, BUFFER_SIZE);
 		buffer->read_head = 0;
-		//buffer->write_head = ft_strlen(buffer->chars);
 		buffer->write_head = *bytes_read;
 		buffer->chars[*bytes_read] = '\0';
 	}
@@ -176,13 +172,5 @@ void	ft_bzero(void *s, size_t n)
 	}
 }
 /* ----------------------------- FUNC 9 ------------------------------------- */
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
 
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
 /* ----------------------------- FUNC 10 ------------------------------------ */
