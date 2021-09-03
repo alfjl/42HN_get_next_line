@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/02 17:26:24 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/03 11:05:15 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*get_next_line(int fd)
 		line_write(&line, &buffer);
 		if (line.chars[line.filled - 1] == '\n')
 			break ;
-		if (bytes_read == 0 && buffer.chars[buffer.read_head] == '\0') // if I put an "if" here, theres one KO switched to OK, but 2 OKs switched to KOs.
+		if (bytes_read == 0 && buffer.chars[buffer.read_head] == '\0')
 			break ;
 	}
 	if (line_determine_null(&line) == 0)
@@ -47,8 +47,10 @@ char	*get_next_line(int fd)
 /* ----------------------------- FUNC 2 ------------------------------------- */
 void	buffer_create(t_buffer *buffer)
 {
-	// if (buffer->chars == NULL)
-	if (!buffer->chars[0]) // change to correct test phrase! Don't use "!".
+	// if (buffer->chars == NULL) // checks Pointer, not content!
+	// if (buffer->chars[0] == 0)
+	// if (buffer->chars[0] == '\0')
+	if (!buffer->chars[0]) // change to correct test phrase! Don't use "!"
 	{
 		ft_bzero(buffer->chars, BUFFER_SIZE);
 		buffer->write_head = BUFFER_SIZE;
@@ -92,7 +94,7 @@ int	buffer_write(t_buffer *buffer, t_line *line, int *bytes_read, int fd)
 /* ----------------------------- FUNC 5 ------------------------------------- */
 void	line_write(t_line *line, t_buffer *buffer)
 {
-	while (buffer->read_head < buffer->write_head)
+	while (buffer->read_head <= buffer->write_head)
 	{
 		if (buffer->chars[buffer->read_head] != '\n'
 			&& buffer->chars[buffer->read_head] != '\0')
