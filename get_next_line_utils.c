@@ -6,14 +6,51 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:49:00 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/02 17:19:59 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/03 18:15:01 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /* ----------------------------- FUNC 1 ------------------------------------- */
-void	line_append_chars(t_line *line, char c)
+int	buffer_has_data(t_buffer *buffer, int *error_flag)
+{
+	if (buffer->bytes_read == 0 || *error_flag == ON)
+		return (0);
+	return (1);
+}
+
+/* ----------------------------- FUNC 2 ------------------------------------- */
+char	buffer_next_char(t_buffer *buffer, int fd, int	*error_flag)
+{
+	char	c;
+
+	c = '\0';
+	if (buffer->newly_created == ON
+		|| buffer->read_head >= buffer->write_head)
+	{
+		buffer->bytes_read = read(fd, buffer->chars, BUFFER_SIZE);
+		if (buffer->bytes_read == -1)
+			*error_flag = ON;
+		else
+		{
+			buffer->read_head = 0;
+			buffer->write_head = buffer->bytes_read;
+			buffer->chars[buffer->bytes_read] = '\0';
+		}
+	}
+	// if (buffer->chars[buffer->read_head] != '\0')
+	// {
+	// 	c = buffer->chars[buffer->read_head];
+	// 	buffer->read_head += 1;
+	// }
+	c = buffer->chars[buffer->read_head];
+	// 	buffer->read_head += 1;
+	return (c);
+}
+
+/* ----------------------------- FUNC 3 ------------------------------------- */
+void	line_append_char(t_line *line, char c, int *error_flag)
 {
 	char	*temp;
 	int		j;
@@ -22,9 +59,7 @@ void	line_append_chars(t_line *line, char c)
 	{
 		temp = (char *)malloc(sizeof(char) * (line->filled + BUFFER_SIZE + 1));
 		if (temp == NULL)
-		{// noch loeschen
-			//return (NULL); // muss noch abgefangen werden!!!!!!
-		}// noch loeschen
+			*error_flag = ON;
 		else
 		{
 			j = 0;
@@ -39,22 +74,11 @@ void	line_append_chars(t_line *line, char c)
 			line->allocated = line->filled + BUFFER_SIZE;
 		}
 	}
-	line->chars[line->filled] = c;
-	line->filled++;
+	if (*error_flag == OFF)
+		line->chars[line->filled++] = c;
 }
 
-/* ----------------------------- FUNC 2 ------------------------------------- */
-int	line_determine_null(t_line *line)
-{
-	if (ft_strlen(line->chars) == 0)
-	{
-		free(line->chars);
-		return (0);
-	}
-	return (1);
-}
-
-/* ----------------------------- FUNC 3 ------------------------------------- */
+/* ----------------------------- FUNC 4 ------------------------------------- */
 void	ft_bzero(void *s, size_t n)
 {
 	unsigned char	*cs;
@@ -68,16 +92,3 @@ void	ft_bzero(void *s, size_t n)
 		i++;
 	}
 }
-
-/* ----------------------------- FUNC 4 ------------------------------------- */
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-/* ----------------------------- FUNC 5 ------------------------------------- */
