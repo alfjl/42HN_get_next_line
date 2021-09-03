@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/03 18:17:12 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/03 18:58:42 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ char	*get_next_line(int fd)
 		line_append_char(&line, c, &error_flag);
 		if (c == '\n')
 			break ;
+		printf("line.chars = %s, buffer.bytes_read = %i\n", line.chars, buffer.bytes_read); // ###### TPO #############
 	}
-	if (ft_strlen(line.chars))
+	//if (ft_strlen(line.chars))
 	if (error_flag == ON)
 	{
 		line_destroy(&line);
