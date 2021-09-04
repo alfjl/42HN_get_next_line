@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:49:00 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/04 12:41:49 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/04 14:44:25 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	line_append_char(t_line *line, char c, int *error_flag)
 			*error_flag = ON;
 		else
 		{
+			ft_bzero(temp, line->filled + BUFFER_SIZE + 1);
 			j = 0;
 			while (j < line->filled)
 			{

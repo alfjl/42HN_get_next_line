@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/03 17:46:46 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/04 12:47:30 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 typedef struct s_buffer
 {
-	char	chars[BUFFER_SIZE];
+	char	chars[BUFFER_SIZE + 1];
 	int		write_head;
 	int		read_head;
 	int		newly_created;
