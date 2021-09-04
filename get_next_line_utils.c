@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:49:00 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/03 18:15:01 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/04 12:41:49 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* ----------------------------- FUNC 1 ------------------------------------- */
 int	buffer_has_data(t_buffer *buffer, int *error_flag)
 {
-	if (buffer->bytes_read == 0 || *error_flag == ON)
+	if (buffer->bytes_read <= 0 || *error_flag == ON)
 		return (0);
 	return (1);
 }
@@ -37,15 +37,14 @@ char	buffer_next_char(t_buffer *buffer, int fd, int	*error_flag)
 			buffer->read_head = 0;
 			buffer->write_head = buffer->bytes_read;
 			buffer->chars[buffer->bytes_read] = '\0';
+			buffer->newly_created = OFF;
 		}
 	}
-	// if (buffer->chars[buffer->read_head] != '\0')
-	// {
-	// 	c = buffer->chars[buffer->read_head];
-	// 	buffer->read_head += 1;
-	// }
-	c = buffer->chars[buffer->read_head];
-	// 	buffer->read_head += 1;
+	if (buffer->chars[buffer->read_head] != '\0')
+	{
+		c = buffer->chars[buffer->read_head];
+		buffer->read_head += 1;
+	}
 	return (c);
 }
 

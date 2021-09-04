@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/03 18:58:42 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/04 12:32:36 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,21 @@ char	*get_next_line(int fd)
 		line_append_char(&line, c, &error_flag);
 		if (c == '\n')
 			break ;
-		printf("line.chars = %s, buffer.bytes_read = %i\n", line.chars, buffer.bytes_read); // ###### TPO #############
 	}
-	//if (ft_strlen(line.chars))
+	//printf("bytes_read = %i, line.alloc = %i, line.filled = %i, buffer.write = %i, buffer.read = %i\n", buffer.bytes_read, line.allocated, line.filled, buffer.write_head, buffer.read_head);
 	if (error_flag == ON)
 	{
 		line_destroy(&line);
 		return (NULL);
 	}
+	// if (buffer.bytes_read == 0 && buffer.write_head < BUFFER_SIZE)
+	// if (buffer.bytes_read == 0 && buffer.read_head == 0)
+	//if (buffer.bytes_read == 0 && buffer.write_head == buffer.read_head)
+	//{
+	//			printf("in here");
+	//if (buffer.bytes_read == 0)
+	//	return (NULL);
+	//}
 	return (line.chars);
 }
 
