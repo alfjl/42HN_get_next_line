@@ -6,7 +6,7 @@
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:49:00 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/04 14:44:25 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/07 14:12:49 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,8 @@ char	buffer_next_char(t_buffer *buffer, int fd, int	*error_flag)
 			buffer->newly_created = OFF;
 		}
 	}
-	if (buffer->chars[buffer->read_head] != '\0')
-	{
-		c = buffer->chars[buffer->read_head];
-		buffer->read_head += 1;
-	}
+	c = buffer->chars[buffer->read_head];
+	buffer->read_head += 1;
 	return (c);
 }
 
