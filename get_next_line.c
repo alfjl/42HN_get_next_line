@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_ericshints.c                         :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alanghan <alanghan@student.42heilbrTRUEn.    +#+  +:+       +#+        */
+/*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:33:56 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/20 10:21:14 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/20 10:38:09 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 /*
-** ERICS HINTS:
 ** 1.) change the BUFFER_SIZE malloced for line in .c and _utils.c. e.g. fixed value like 64, or BETTER: 1,5 of the last time!
-** 2.) last check if return NULL or line.chars: if check = TRUE, just use function to write NULL in line.chars, and only have 1 return value, not two!
+** 2.) last check if return NULL or line.chars: if check == TRUE, just use function to write NULL in line.chars, and only have 1 return value, not two!
 */
 #include "get_next_line.h"
 
