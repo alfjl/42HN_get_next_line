@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_ericshints.h                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 10:23:01 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/04 12:47:30 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/20 10:19:32 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@
 # include <unistd.h>
 
 /* -------------------------- DEFINES --------------------------------------- */
-# define OFF 0
-# define ON 1
+# define FALSE 0
+# define TRUE 1
 
 typedef struct s_buffer
 {
-	char	chars[BUFFER_SIZE + 1];
-	int		write_head;
-	int		read_head;
-	int		newly_created;
-	int		bytes_read;
+	// char	chars[BUFFER_SIZE + 1];
+	char		chars[BUFFER_SIZE + 1];
+	int			write_head;
+	int			read_head;
+	int			newly_created;
+	ssize_t		bytes_read;			// muss eigentlich long oder long long sein um Fehler zu vermeiden! Nochmal in def von read den Typ des Retrun values pruefen!
 }					t_buffer;
 
 typedef struct s_line

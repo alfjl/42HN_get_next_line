@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_ericshints.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: alanghan <alanghan@student.42heilbrTRUEn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:49:00 by alanghan          #+#    #+#             */
-/*   Updated: 2021/09/07 14:12:49 by alanghan         ###   ########.fr       */
+/*   Updated: 2021/09/09 16:52:32 by alanghan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* ----------------------------- FUNC 1 ------------------------------------- */
 int	buffer_has_data(t_buffer *buffer, int *error_flag)
 {
-	if (buffer->bytes_read <= 0 || *error_flag == ON)
+	if (buffer->bytes_read <= 0 || *error_flag == TRUE)
 		return (0);
 	return (1);
 }
@@ -26,18 +26,18 @@ char	buffer_next_char(t_buffer *buffer, int fd, int	*error_flag)
 	char	c;
 
 	c = '\0';
-	if (buffer->newly_created == ON
+	if (buffer->newly_created == TRUE
 		|| buffer->read_head >= buffer->write_head)
 	{
 		buffer->bytes_read = read(fd, buffer->chars, BUFFER_SIZE);
 		if (buffer->bytes_read == -1)
-			*error_flag = ON;
+			*error_flag = TRUE;
 		else
 		{
 			buffer->read_head = 0;
 			buffer->write_head = buffer->bytes_read;
 			buffer->chars[buffer->bytes_read] = '\0';
-			buffer->newly_created = OFF;
+			buffer->newly_created = FALSE;
 		}
 	}
 	c = buffer->chars[buffer->read_head];
@@ -53,12 +53,12 @@ void	line_append_char(t_line *line, char c, int *error_flag)
 
 	if (line->filled >= line->allocated)
 	{
-		temp = (char *)malloc(sizeof(char) * (line->filled + BUFFER_SIZE + 1));
+		temp = (char *)malloc(sizeof(char) * (line->filled + 64)); // ------- 1. SEMI FIXED ---------
 		if (temp == NULL)
-			*error_flag = ON;
+			*error_flag = TRUE;
 		else
 		{
-			ft_bzero(temp, line->filled + BUFFER_SIZE + 1);
+			ft_bzero(temp, line->filled + 64); // ------- 1. SEMI FIXED ---------
 			j = 0;
 			while (j < line->filled)
 			{
@@ -68,10 +68,10 @@ void	line_append_char(t_line *line, char c, int *error_flag)
 			free(line->chars);
 			line->chars = NULL;
 			line->chars = temp;
-			line->allocated = line->filled + BUFFER_SIZE;
+			line->allocated = line->filled + 63; // ------- 1. SEMI FIXED ---------
 		}
 	}
-	if (*error_flag == OFF)
+	if (*error_flag == FALSE)
 		line->chars[line->filled++] = c;
 }
 
