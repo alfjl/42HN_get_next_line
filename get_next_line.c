@@ -12,9 +12,9 @@
 
 
 /*
-** 1.) change the BUFFER_SIZE malloced for line in .c and _utils.c. e.g. fixed value like 64, or BETTER: 1,5 of the last time!
-** 2.) last check if return NULL or line.chars: if check == TRUE, just use function to write NULL in line.chars, and only have 1 return value, not two!
+** 1.) change the BUFFER_SIZE malloced for line in .c and _utils.c. e.g.: 1,5 of the last time!
 */
+
 #include "get_next_line.h"
 
 /* ----------------------------- FUNC 1 ------------------------------------- */
