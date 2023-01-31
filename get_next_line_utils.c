@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_ericshints.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alanghan <alanghan@student.42heilbrTRUEn.    +#+  +:+       +#+        */
+/*   By: alanghan <alanghan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:49:00 by alanghan          #+#    #+#             */
 /*   Updated: 2021/09/09 16:52:32 by alanghan         ###   ########.fr       */
@@ -53,12 +53,12 @@ void	line_append_char(t_line *line, char c, int *error_flag)
 
 	if (line->filled >= line->allocated)
 	{
-		temp = (char *)malloc(sizeof(char) * (line->filled + 64)); // ------- 1. SEMI FIXED ---------
+		temp = (char *)malloc(sizeof(char) * (line->filled + 64));
 		if (temp == NULL)
 			*error_flag = TRUE;
 		else
 		{
-			ft_bzero(temp, line->filled + 64); // ------- 1. SEMI FIXED ---------
+			ft_bzero(temp, line->filled + 64);
 			j = 0;
 			while (j < line->filled)
 			{
@@ -68,7 +68,7 @@ void	line_append_char(t_line *line, char c, int *error_flag)
 			free(line->chars);
 			line->chars = NULL;
 			line->chars = temp;
-			line->allocated = line->filled + 63; // ------- 1. SEMI FIXED ---------
+			line->allocated = line->filled + 63;
 		}
 	}
 	if (*error_flag == FALSE)

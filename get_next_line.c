@@ -10,11 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-/*
-** 1.) change the BUFFER_SIZE malloced for line in .c and _utils.c. e.g. fixed value like 64, or BETTER: 1,5 of the last time!
-** 2.) last check if return NULL or line.chars: if check == TRUE, just use function to write NULL in line.chars, and only have 1 return value, not two!
-*/
 #include "get_next_line.h"
 
 /* ----------------------------- FUNC 1 ------------------------------------- */
@@ -38,7 +33,7 @@ char	*get_next_line(int fd)
 			break ;
 	}
 	if (error_flag == TRUE || (buffer.bytes_read == 0 && line.filled == 1))
-		line_destroy(&line); // ------- 2. FIXED ---------
+		line_destroy(&line);
 	return (line.chars);
 }
 
@@ -58,13 +53,13 @@ void	buffer_create(t_buffer *buffer)
 /* ----------------------------- FUNC 3 ------------------------------------- */
 void	line_create(t_line *line, int *error_flag)
 {
-	line->chars = (char *)malloc(sizeof(char) * 64); // ------- 1. SEMI FIXED ---------
+	line->chars = (char *)malloc(sizeof(char) * 64);
 	if (line->chars == NULL)
 		*error_flag = TRUE;
 	else
 	{
-		ft_bzero(line->chars, 64); // ------- 1. SEMI FIXED ---------
-		line->allocated = 63; // ------- 1. SEMI FIXED ---------
+		ft_bzero(line->chars, 64);
+		line->allocated = 63;
 		line->filled = 0;
 	}
 }

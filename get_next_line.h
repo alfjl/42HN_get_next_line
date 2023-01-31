@@ -24,12 +24,11 @@
 
 typedef struct s_buffer
 {
-	// char	chars[BUFFER_SIZE + 1];
 	char		chars[BUFFER_SIZE + 1];
 	int			write_head;
 	int			read_head;
 	int			newly_created;
-	ssize_t		bytes_read;			// muss eigentlich long oder long long sein um Fehler zu vermeiden! Nochmal in def von read den Typ des Retrun values pruefen!
+	ssize_t		bytes_read;
 }					t_buffer;
 
 typedef struct s_line
