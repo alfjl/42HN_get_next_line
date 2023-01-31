@@ -22,6 +22,9 @@
 # define FALSE 0
 # define TRUE 1
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+
 typedef struct s_buffer
 {
 	char		chars[BUFFER_SIZE + 1];
