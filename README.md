@@ -15,5 +15,5 @@ The only external functions allowed are 'read', 'malloc' and 'free'.
 I tried to solve this project without relying on any of the string manipulation functions from our libft. I thus utilized a **ring buffer** and processed the read line **char by char**. All of this was a very good learning, that accompanied me in the parsing parts of the following 42 projects.
 
 ### Resources
-[Static variables](https://www.geeksforgeeks.org/static-variables-in-c/)
+[Static variables](https://www.geeksforgeeks.org/static-variables-in-c/)  
 [Fixed size ring buffer](https://www.embedded.com/ring-buffer-basics/)
